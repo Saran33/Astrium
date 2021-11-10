@@ -1,0 +1,293 @@
+
+.container-fluid {
+    box-sizing : border-box; 
+    margin : 0px; 
+    padding : 0px; 
+    /* outline : rgb(255, 0, 0) solid 2px;  */
+    position : relative; 
+    border-bottom : 1px solid rgba(255, 255, 255, 0.1); 
+}
+
+.pull-left.logo-box {
+    box-sizing : border-box; 
+    margin : 0px; 
+    padding : 11px 0px 8px 45px; 
+    border : 0px none rgb(34, 34, 34); 
+    /* outline : rgb(255, 0, 0) solid 2px;  */
+    float : left; 
+    position : relative;
+}
+
+.navbar-logo {
+    box-sizing : border-box; 
+    vertical-align : middle; 
+    border-style : none; 
+    margin : 0px; 
+    padding : 0px; 
+    border : 0px none rgb(100, 100, 111); 
+    /* outline : rgb(255, 0, 0) solid 2px;  */
+    display : inline-block; 
+    max-width : 100%; 
+    height : 53.1562px; 
+    filter : brightness(1) contrast(1) saturate(1) blur(0px) hue-rotate(0deg); 
+
+}
+
+.navbar-brand:hover {
+    text-decoration : none;
+    outline : none;
+    color : rgb(211, 171, 149);
+}
+
+.nav-link {
+    box-sizing : border-box; 
+    color : rgb(255, 255, 255); 
+    text-decoration : none solid rgb(255, 255, 255); 
+    margin : 0px; 
+    padding : 14px 30px 16px; 
+    border : 0px none rgb(255, 255, 255); 
+    transition : all 0.5s ease 0s; 
+    position : relative; 
+    display : block; 
+    font-family : Roboto, sans-serif; 
+    line-height : 26px; 
+    font-weight : 400; 
+    opacity : 1; 
+    letter-spacing : 1px; 
+    text-transform : uppercase; 
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+}
+
+.nav-link:hover {
+    text-decoration : none;
+    outline : none;
+    color : rgb(211, 171, 149);
+}
+
+.collapse.navbar-collapse {
+    box-sizing : border-box; 
+    width : 1170px; 
+    padding-right : 0px; 
+    padding-left : 0px; 
+    margin-right : 213px; 
+    margin-left : 213px; 
+    margin : 0px 213px; 
+    padding : 0px; 
+    border : 0px none rgb(34, 34, 34); 
+    /* outline : rgb(255, 0, 0) solid 2px;  */
+}
+
+.d-flex {
+    box-sizing : border-box;
+    display : flex;
+    border-radius : 0px;
+    font-family : Roboto, sans-serif;
+}
+.form-control .me-2{
+    box-sizing : border-box; 
+    margin : 0px 8px 0px 0px;
+    border-radius : 2.618px;
+    font-family : Roboto, sans-serif;
+    font-size : 16px; 
+    line-height : 24px; 
+    outline-offset : -2px; 
+    appearance : none; 
+    display : block; 
+    width : 441.297px; 
+    padding : 6px 12px; 
+    font-weight : 400; 
+    color : rgb(33, 37, 41); 
+    background-color : rgb(255, 255, 255); 
+    background-clip : padding-box; 
+    border : 1px solid rgb(141, 186, 250); 
+    border-radius : 4px; 
+    transition : border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s; 
+    border-color : rgb(141, 186, 250); 
+    /* outline : rgb(255, 0, 0) solid 2px;  */
+    box-shadow : rgba(13, 110, 253, 0.227) 0px 0px 0px 3.59719px; 
+    margin-right : 8px; 
+
+}
+
+.btn-outline-success {
+    box-sizing : border-box;
+    color: #dcbba6;
+    text-decoration : none solid rgb(255, 255, 255);
+    border-radius : 2.618px;
+    border-color: #dcbba6;
+    border : 0px none #dcbba6;
+    margin : 0px;
+    outline : rgb(255, 255, 255) none 0px;
+    transition : all 0.5s ease 0s;
+    position : relative;
+    display : block;
+    font-family : Roboto, sans-serif;
+    font-weight : 400;
+    opacity : 1;
+    letter-spacing : 1px;
+    text-transform : uppercase;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+}
+
+.btn-outline-success:hover {
+    text-decoration : none;
+    outline : none;
+    color : #ffff;
+    background-color : #dcbba6;
+    background-image : linear-gradient(180deg, var( --e-global-color-accent ) 0%, var( --e-global-color-16c8408 ) 100%);
+    background : #dcbba6 none repeat scroll 0% 0% / auto padding-box border-box;
+}
+
+.navbar-brand {
+    box-sizing : border-box;
+    color : rgb(255, 255, 255); 
+    text-decoration : none solid rgb(255, 255, 255); 
+    margin : 0px; 
+    padding : 14px 30px 16px; 
+    border : 0px none rgb(255, 255, 255); 
+    transition : all 0.5s ease 0s; 
+    position : relative; 
+    display : block; 
+    font-family : Trajan+Pro, sans-serif; 
+    font-size : 20px; 
+    line-height : 26px; 
+    font-weight : 400; 
+    opacity : 1; 
+    letter-spacing : 1px; 
+    /* text-transform : uppercase;  */
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+}
+
+body * {
+    font-family: Roboto, sans-serif !important;
+}
+
+
+.header-1 {
+    box-sizing : border-box; 
+    margin-top : 0px; 
+    margin-bottom : 8px; 
+    font-family : Roboto, sans-serif;
+    font-weight : 500; 
+    line-height : 48px; 
+    font-size : 40px; 
+    padding : 8px 12px 8px 9.88px;
+}
+
+.header-3 {
+    box-sizing : border-box; 
+    margin-top : 0px; 
+    margin-bottom : 8px; 
+    font-weight : 500; 
+    line-height : 33.6px; 
+    font-size : 28px; 
+    font-family : Roboto, sans-serif; 
+    padding : 0px 0px 0px 9.88px;
+}
+
+.securityselector_label {
+    box-sizing : border-box; 
+    display : inline-block; 
+    font-family : Roboto, sans-serif; 
+    padding : 0px 0px 0px 9.88px;
+}
+
+.form-select.form-select-lg.mb-3{
+    width : 32%;
+}
+/* .form-select.form-select-lg.mb-3{
+    box-sizing : border-box;
+    margin : 0px 0px 16px;
+    font-family : Roboto, sans-serif;
+    font-size : 20px;
+    line-height : 30px;
+    text-transform : none;
+    overflow-wrap : normal;
+    display : block;
+    width : 604px;
+    padding : 8px 12px 8px 16px;
+    font-weight : 400;
+    color : rgb(33, 37, 41);
+    background-color : rgb(255, 255, 255);
+    background-image : none;
+    background-repeat : no-repeat;
+    background-position : right 12px 50%;
+    background-size : 16px 12px;
+    border : 1px solid rgb(134, 183, 254);
+    border-radius : 4.8px;
+    transition : border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+    appearance : none;
+    border-color : rgb(134, 183, 254);
+    outline : rgb(33, 37, 41) none 0px;
+    box-shadow : rgba(13, 110, 253, 0.25) 0px 0px 0px 4px;
+    padding-right : 12px;
+    padding-top : 8px;
+    padding-bottom : 8px;
+    padding-left : 16px;
+    margin-bottom : 16px;
+} */
+
+.btn.btn-primary {
+    width : 14.59%;
+    box-sizing : border-box; 
+    font-family : Roboto, sans-serif; 
+    font-size : 16px; 
+    line-height : 24px; 
+    appearance : button; 
+    cursor : pointer; 
+    display : block; 
+    font-weight : 400; 
+    color : rgb(255, 255, 255); 
+    text-align : center; 
+    text-decoration : none solid rgb(255, 255, 255); 
+    user-select : none; 
+    background-color : #dcbba6; 
+    /* border : 1px solid rgb(10, 83, 191);  */
+    padding : 6px 12px; 
+    border-radius : 0px; 
+    transition : color 0.15s ease-in-out 0s, background-color 0.15s ease-in-out 0s, border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s; 
+    box-shadow : #DCBBA6 0px 0px 0px 3.76623px; 
+    border-color : #dcbba6;
+    margin-top : 0px; 
+    margin-right : 0px; 
+    margin-left : 16.66%;
+    /* margin : 0px 32px; */
+    font-family : Roboto, sans-serif;
+    text-transform : uppercase;
+}
+
+
+/* 
+.btn-outline-success {
+    box-sizing : border-box;
+    color: #dcbba6;
+    border-color: #dcbba6;
+    text-decoration : none solid rgb(255, 255, 255);
+    background-color : rgba(0, 0, 0, 0);
+    margin : 0px;
+    padding : 0px 0px 0px;
+    border : 0px none #dcbba6;
+    outline : #dcbba6 none 0px;
+    transition : all 0.5s ease 0s;
+    position : relative;
+    display : block;
+    font-size : 18px;
+    font-family : Roboto, sans-serif;
+    line-height : 1px;
+    font-weight : 400;
+    opacity : 1;
+    letter-spacing : 1px;
+    text-transform : uppercase;
+    background : rgba(0, 0, 0, 0) none repeat scroll 0% 0% / auto padding-box border-box;
+}
+
+.btn-outline-success:hover {
+    text-decoration : none;
+    outline : none;
+    color : var( --e-global-color-93927bb );
+    background-color : transparent;
+    background-image : linear-gradient(180deg, var( --e-global-color-accent ) 0%, var( --e-global-color-16c8408 ) 100%);
+}
+
+
+ */

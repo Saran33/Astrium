@@ -1,0 +1,35 @@
+{% extends 'main_app/basic.html' %}
+{% load static %}
+{% block title %}
+SecuritySelector
+{% endblock %}
+{% block css %}
+{% comment %}
+<link rel="stylesheet" type"text/css" href="{% static 'main_app/css/securityselector.css'%}"> {% endcomment %}
+<style>
+</style>
+{% endblock %}
+{% block body %}
+<div class="container"></div>
+<h1 class="header-1">PWE Markets Data</h1>
+<h3 class="header-3">Security Analysis</h3>
+<p></p>
+<form class="security_selector" action="/securitytracker">
+    <label class="securityselector_label" for="securityselector">Select Securities:</label>
+    <select class="form-select form-select-lg mb-3" multiple aria-label="multiple select example"
+        name="securityselector">
+        {% for i in securityselector %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor%}
+    </select>
+    <br>
+    <div class="d-grid gap-2">
+        <input class="btn btn-primary" type="submit">
+    </div>
+</form>
+</div>
+{% endblock %}
+{% block js %}
+<script>
+</script>
+{% endblock %}
