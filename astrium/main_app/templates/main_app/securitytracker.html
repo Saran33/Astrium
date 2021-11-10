@@ -62,9 +62,24 @@ SecurityTracker
                 {% endfor %}
             </tbody>
         </table>
-        {% comment %} WARNING {% endcomment %}
+        {% comment %} div {% endcomment %}
     </table>
 </div>
+<script>
+    const roomName = JSON.parse(document.getElementById('room-name').textContent)
+    var queryString = window.location.search;
+    queryString = queryString.substring(1);
+    consle.log(queryString);
+    const securitySocket = new WebSocket(
+        'ws://' +
+        windows.location.host + 
+        '/ws/security/' +
+        roomName +
+        '/' +
+        '?' +
+        queryString
+    )
+</script>
 {% endblock %}
 {% block js %}
 <script>

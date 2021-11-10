@@ -144,6 +144,26 @@ http://127.0.0.1:8000/admin/
 `celery -A astrium beat -l INFO`
 - In site admin, click "Periodic tasks", to see the task added. Click on the task, click arguments tab to see the args.
 
+# Use websockets to auto update front end
+Server automatically sends a response.
+1. Install django channels:
+`pip install channels`
+2. Switch from wsgi server to asgi server.
+- Add `channels` to installed apps in settings.py.
+- Copy below code to asgi.py:
+https://channels.readthedocs.io/en/stable/installation.html
+- Add `ASGI_APPLICATION = "myproject.asgi.application"` to settings.py
+4. In main_app dir, create consuners.py, routing.py
+5. Paste django channels [chat/routing.py code](https://channels.readthedocs.io/en/stable/tutorial/part_2.html) in routing.py and replace 'chat' with security in the regex path. Change consumer to SecurityConsumer.
+In django channels when making a web socket connection it consists of a group and channel. Channel is specific to a user who wants to make a socket connection with the server. A unique channel ID will be assigned to the user, and the user is added to a group. Multiple users can be added to a group.
+- Make a common group called securitygroup. The group will rcieve the live price updates.
+- In consumers.py, make new consumer with code from: https://channels.readthedocs.io/en/stable/tutorial/part_3.html
+- create `security_update` in the consumer and rename chat. It will call the function to semd the data to the web socket. Celery will use one broadcast method and send the data to the group, to which all the users will be connected. Then the function will be used, because for each user, a seperate object will be created, specific to each user socket connection. The security_update function will be called from the object to send the data to the user.
+As soon as someone selects securities on our website, then a web socket connection will be established between user and server, for as long as the connection persists. During that time, the selected securities will be added in the celery worker task, and celery will call the third-party APIs to retrieve the data for the socks.
+6. Make a socket connection between user and server:
+- add socket connection in securitytracker.html with JS.
+
+
 
 # Run server for testing
 source astenv/bin/activate

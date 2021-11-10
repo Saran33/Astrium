@@ -42,6 +42,8 @@ INSTALLED_APPS = [
 
     'django_celery_results',
     'django_celery_beat',
+
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -73,7 +75,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'astrium.wsgi.application'
-
+ASGI_APPLICATION = "astriun.asgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
