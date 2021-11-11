@@ -193,10 +193,11 @@ stockSocket.onmessage = function (e)...
 - Restart workers and check.
 16. Convert nans to NULLS in backend so they can be parsed as JSON.
 `pip install simplejson`
--Add it to tasks.py and amend the get_quote_table call with 
+-Add it to tasks.py and amend the get_quote_table call with `for (const [key, value] of Object.entries(data)) {...` for loop to iterate over the parsed object using JSON.parse. In JS, there is no dict data structure, its an object. GetElementById and give the id to every element that is stored in the table. Add the id to all fields.
 
 # Make data specific to each user
-
+1. pass data to table:
+- Update script in securitytracker.py > 
 
 
 # Run server for testing

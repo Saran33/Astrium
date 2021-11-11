@@ -21,7 +21,7 @@ class SecurityConsumer(AsyncWebsocketConsumer):
             task.args = json.dumps([args]) # Dump data into celery beats arguements.
             task.save()
         else: # Create task again.
-            schedule, created = IntervalSchedule.objects.get_or_create(every=10, period = IntervalSchedule.SECONDS)
+            schedule, created = IntervalSchedule.objects.get_or_create(every=2, period = IntervalSchedule.SECONDS)
             task = PeriodicTask.objects.create(interval=schedule, name='every-10-seconds', task="main_app.tasks.update_security", args=json.dumps([securityselector]))
             # After task is added to periodic task table, celery will schedule it.
 
