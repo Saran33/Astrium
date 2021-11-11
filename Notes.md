@@ -47,8 +47,10 @@ Copy content from outer urls.py to main_app urls.py, and remove unecessary code.
 15. Link some stuff, add some stuff etc...
 15. Test it:
 `python manage.py runserver`
-16. In Bootstrap docs, Forms > Select > Multipleselect, copy it to securitselector.html block body (wrap it in a div. `<div class="container">
-<h1>Security Analysis</h1>`<p>Select securities</p><form action=""><select class="form-select form-select-lg mb-3" multiple aria-label="multiple select example">)
+16. In Bootstrap docs, Forms > Select > Multipleselect, copy it to securitselector.html block body (wrap it in a div. 
+```html<div class="container">
+<h1>Security Analysis</h1><p>Select securities</p><form action=""><select class="form-select form-select-lg mb-3" multiple aria-label="multiple select example">
+```
 
 17. Make securiytracker template.
 - Bootstrap Conent > tables > table > copy it to tracker. Wrap in:
@@ -197,7 +199,10 @@ stockSocket.onmessage = function (e)...
 
 # Make data specific to each user
 1. pass data to table:
-- Update script in securitytracker.py > 
+- Update JS script in securitytracker.py to use web socket to update table every n seconds.
+
+
+
 
 
 # Run server for testing
