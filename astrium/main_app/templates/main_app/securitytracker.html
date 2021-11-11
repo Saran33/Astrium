@@ -6,10 +6,11 @@ SecurityTracker
 {% endblock %}
 {% block css %}
 <style>
-    .red{
+    .red {
         color: red;
     }
-    .green{
+
+    .green {
         color: green;
     }
 </style>
@@ -17,7 +18,7 @@ SecurityTracker
 {% block body %}
 <div class="container">
     <h1>Market Data</h1>
-    <table class="table-container">
+    <div class="table-container">
         <table class="table">
             <thead>
                 <tr>
@@ -43,15 +44,15 @@ SecurityTracker
                         <script>
                             var change = document.getElementById("{{key}}_price").innerHTML - document.getElementById("{{key}}_prevprice").innerHTML;
                             change = Number((change).toFixed(4));
-                            if (change>0){
+                            if (change > 0) {
                                 document.getElementById("{{key}}_change").className = "green"
                                 document.getElementById("{{key}}_change").innerHTML = "+" + change
                             }
-                            else if (change<1){
+                            else if (change < 1) {
                                 document.getElementById("{{key}}_change").className = "red"
                                 document.getElementById("{{key}}_change").innerHTML = change
                             }
-                            else{
+                            else {
                                 document.getElementById("{{key}}_change").innerHTML = change
                             }
                         </script>
@@ -62,23 +63,30 @@ SecurityTracker
                 {% endfor %}
             </tbody>
         </table>
-        {% comment %} div {% endcomment %}
-    </table>
+        {% comment %} table {% endcomment %}
 </div>
+</div>
+{{ room_name|json_script:"room-name" }}
 <script>
-    const roomName = JSON.parse(document.getElementById('room-name').textContent)
+    const roomName = JSON.parse(document.getElementById('room-name').textContent);
     var queryString = window.location.search;
     queryString = queryString.substring(1);
-    consle.log(queryString);
+    console.log(queryString);
     const securitySocket = new WebSocket(
         'ws://' +
-        windows.location.host + 
+        window.location.host +
         '/ws/security/' +
         roomName +
         '/' +
         '?' +
         queryString
-    )
+    );
+    
+    securitySocket.onmessage = function (e) {
+        console.log(e.data);
+        const data = JSON.parse(e.data);
+        console.log(data);
+    };
 </script>
 {% endblock %}
 {% block js %}

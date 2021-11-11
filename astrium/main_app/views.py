@@ -15,47 +15,6 @@ def SecuritySelector(request):
     print(security_selector)
     return render(request, 'main_app/securityselector.html', {"securityselector": security_selector})
 
-# def SecurityTracker(request):
-#     details = get_quote_table('AAPL')
-#     print(details)
-#     return render(request, 'main_app/securitytracker.html')
-
-# def SecurityTracker(request):
-#     securityselector = request.GET.getlist('securityselector')
-#     print('securityselector')
-#     data = {}
-#     available_securities = tickers_sp500()
-#     for i in securityselector:
-#         if i in available_securities:
-#             pass
-#         else:
-#             return HttpResponse("Error")
-#     for i in securityselector:
-#         details = get_quote_table(i)
-#         data.update(details)
-
-#     print(data)
-#     return render(request, 'main_app/securitytracker.html')
-
-# def SecurityTracker(request):
-#     securityselector = request.GET.getlist('securityselector')
-#     print('securityselector')
-#     # data = {}
-#     data = defaultdict()
-#     available_securities = tickers_sp500()
-#     for i in securityselector:
-#         if i in available_securities:
-#             pass
-#         else:
-#             return HttpResponse("Error")
-#     for i in securityselector:
-#         details = get_quote_table(i)
-#         data[f'{i}'] = details
-
-#     for key, value in data.items():
-#         print(key, value)
-#     return render(request, 'main_app/securitytracker.html')
-
 
 def SecurityTracker(request):
     securityselector = request.GET.getlist('securityselector')
@@ -96,6 +55,49 @@ def SecurityTracker(request):
     speed = end - start
     print("TIME TAKEN:", speed)
 
-    for key, value in data.items():
-        print(key, value)
-    return render(request, 'main_app/securitytracker.html', {'data': data})
+    # for key, value in data.items():
+    #     print(key, value)
+    print(data)
+    return render(request, 'main_app/securitytracker.html', {'data': data, 'room_name': 'track'})
+
+
+# def SecurityTracker(request):
+#     details = get_quote_table('AAPL')
+#     print(details)
+#     return render(request, 'main_app/securitytracker.html')
+
+# def SecurityTracker(request):
+#     securityselector = request.GET.getlist('securityselector')
+#     print('securityselector')
+#     data = {}
+#     available_securities = tickers_sp500()
+#     for i in securityselector:
+#         if i in available_securities:
+#             pass
+#         else:
+#             return HttpResponse("Error")
+#     for i in securityselector:
+#         details = get_quote_table(i)
+#         data.update(details)
+
+#     print(data)
+#     return render(request, 'main_app/securitytracker.html')
+
+# def SecurityTracker(request):
+#     securityselector = request.GET.getlist('securityselector')
+#     print('securityselector')
+#     # data = {}
+#     data = defaultdict()
+#     available_securities = tickers_sp500()
+#     for i in securityselector:
+#         if i in available_securities:
+#             pass
+#         else:
+#             return HttpResponse("Error")
+#     for i in securityselector:
+#         details = get_quote_table(i)
+#         data[f'{i}'] = details
+
+#     for key, value in data.items():
+#         print(key, value)
+#     return render(request, 'main_app/securitytracker.html')

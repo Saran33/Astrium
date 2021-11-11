@@ -15,15 +15,15 @@ app.conf.update(timezone='UTC')
 app.config_from_object(settings, namespace='CELERY')
 
 app.conf.beat_schedule = {
-    'every-10-seconds' : {
-        'task':  'main_app.tasks.update_security',
-        'schedule': 10,
-        'args': (['AAPL', 'AMZN', 'FB'],)
-    },
+    # 'every-10-seconds' : {
+    #     'task': 'mainapp.tasks.update_security',
+    #     'schedule': 10,
+    #     'args': (['AAPL', 'AMZN'],)
+    # },
 }
 
 app.autodiscover_tasks()
 
 @app.task(bind=True)
 def debug_task(self):
-    print(F'Request: {self.request!r}')
+    print(f'Request: {self.request!r}')
