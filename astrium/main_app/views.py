@@ -5,9 +5,9 @@ from collections import defaultdict
 import time
 import queue
 from threading import Thread
+from asgiref.sync import sync_to_async
 
 # Create your views here.
-
 
 def SecuritySelector(request):
     # security_selector = tickers_ftse100()
@@ -16,7 +16,17 @@ def SecuritySelector(request):
     return render(request, 'main_app/securityselector.html', {"securityselector": security_selector})
 
 
-def SecurityTracker(request):
+@sync_to_async
+def checkAuthenticated(request):
+    if not request.user.is_authenticated:
+        return False
+    else:
+        return True
+
+async def SecurityTracker(request):
+    is_loginned = await checkAuthenticated(request)
+    if not is_loginned:
+        return HttpResponse("Login First")
     securityselector = request.GET.getlist('securityselector')
     print('securityselector')
     data = {}

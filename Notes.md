@@ -116,11 +116,11 @@ Navigate to the redis directory and launch the client.exe and in the newly opene
 4. Install [django-celery-results](https://github.com/celery/django-celery-results) to monitor the status of tasks allocated to celery:
 `pip install -U django-celery-results`
 - add `'django_celery_results'` to settings.py INSTALLED_APPS.
-5. Install [django-celery-beat(https://github.com/celery/django-celery-beat) to allocate tasks to celery (redis will stand in between as broker to enforce the rules)
+5. Install [django-celery-beat](https://github.com/celery/django-celery-beat) to allocate tasks to celery (redis will stand in between as broker to enforce the rules)
 `pip install -U django-celery-beat`
 - add `'django_celery_beat'` to settings.py INSTALLED_APPS, and beat settings.
 6. Create celery.py in astrium folder
-9. reate tasks.py in mainapp folder.
+9. Create tasks.py in mainapp folder.
 After user selects stocks, the task will be added in celery, which will call it every n seconds. Then it will call 3rd party API and use the web sockets to update the securities.
 If multiple users are selecting stocks on the site, it will combine the selections into one task, to reduce the number of server calls. If the stocks are common to both, it will add those, but if the selections are not common, then celery will call the 3rd party API by passing the other selections as new arguements.
 The data will be filtered to send the correct stocks to the correct user. It reduces API calls.
@@ -139,7 +139,7 @@ If task is added directly inside beat scheduler, the task would automatically be
 `python manage.py createsuperuser` (pweadmin)
 15. Test the server: `python manage.py runserver`
 http://127.0.0.1:8000/admin/
-16. Install redis:
+16. Install redis for python:
 `pip install redis`
 17. Start new celery task: Open new terminal (if using windows, need to use either eventlet, gevent, or pool=solo).
 OSX or Linux server:
@@ -175,10 +175,10 @@ As soon as someone selects securities on our website, then a web socket connecti
 `pip install channels-redis`
 - Refresh the page and it should return a websocket handshake (check in the chrome console or shell).
 10. Configuration for how the server sends data to front end:
-- Task was previousy in celery beat, but we don't want it to schedule automatically. We want it to dynamically schedule, so that we can add and delete tasks from the periodic task table within our database.
+- Task was initially in celery beat, but we don't want it to schedule automatically. We want it to dynamically schedule, so that we can add and delete tasks from the periodic task table within our database.
 - Add tasks inside connect method, inside celery beat schedule, so it can tell celery to perform that task. Add:
-a. Parse query_string.
-b. Add to celery beat - Create a new task for performing a django ORM operation to add a new record in the db table. We can't perform it directly within the async function, so need to create a sync function, addToCeleryBeat().
+- a. Parse query_string.
+- b. Add to celery beat - Create a new task for performing a django ORM operation to add a new record in the db table. We can't perform it directly within the async function, so need to create a sync function, addToCeleryBeat().
 11. In tasks.py, send data to group.
 `pip install asyncio`
 12. Set recieve function in consumers.py - broadcast to all users for now, to check it is working on client side.
@@ -186,22 +186,46 @@ b. Add to celery beat - Create a new task for performing a django ORM operation 
 Also delete all task results. Then  run and check:
 - `celery -A astrium.celery worker --pool=solo -l info`
 - `celery -A astrium beat -l INFO`
-It should return a socket connection and the sheduler should be updated.
+- It should return a socket connection and the sheduler should be updated.
 14. In the stocktracker.html, create another event to log output to console when data is recieved from web socket.
 ```python
 stockSocket.onmessage = function (e)...
 ```
-15. In tasks.py, 
+15. In tasks.py,
 - Restart workers and check.
 16. Convert nans to NULLS in backend so they can be parsed as JSON.
 `pip install simplejson`
--Add it to tasks.py and amend the get_quote_table call with `for (const [key, value] of Object.entries(data)) {...` for loop to iterate over the parsed object using JSON.parse. In JS, there is no dict data structure, its an object. GetElementById and give the id to every element that is stored in the table. Add the id to all fields.
+- Add it to tasks.py and use JSON loads and dumps in the get_quote_table call.
+- In securitytracker.html, add `for (const [key, value] of Object.entries(data)) {...` for loop to iterate over the parsed object using JSON.parse. In JS, there is no dict data structure, its an object. GetElementById and give the id to every element that is stored in the table. Add the id to all fields.
+- Pass data to table by updating JS script in securitytracker.py to use web socket to update table every n seconds.
 
 # Make data specific to each user
-1. pass data to table:
-- Update JS script in securitytracker.py to use web socket to update table every n seconds.
+1. Create model in models.py.
+-  Apply migrations: `python manage.py makemigrations` and `python manage.py migrate`
+2. As soon as user makes a socket connection, the info will be stored in our database.
+- Make changes in connect method within consumers.py:
+- Create syncronyous function to add user to securityprofile to perform django ORM operation.
+- addToSecurityProfile()
+3. Send only the data that user has selected to the front end. 
+In consumers.py:
+- Change send_security_update method, include: user_securities = await self.selectUserSecurities(). Once they are retrieved, use a for loop to remove them from the message. If deleted from the message, it will delete from all the users, because the object by reference is passed in python. When the event object is passed to the function, the pointer reference to the heap for the object is transferred, not the value. Therefore, message = event['message'] creates a new variable storing the reference, pointing to the same value in the heap. If modifying the new message variable, it actually modifies the value. As a result, the event object will be changed for all users. This is not desired functionality, so message is copied.
+- Create selectUserSecurities() method and wrap it in @sync_to_async, to parse securities from db. Use security_detail_set because M-to-M relationship. values_list('security') to only retrieve the ticker. flat=True to only return the list. Return the user_securities converted to a list rather than pass directly to async funtion, or else it will throw a django ORM error.
+4. In the SecurityConsumer disconnect method: delete securities from the ans feed of periodic tasks if they are not present in selected list of other users.
+- Define helper function for disconnect() and add it to disconnect.
+5. Add authentication to restrict the tracker app to only users that are logged in to PWE website.
+- In views.py, check if user is auth:
+- Add checkAuthenticated()
+- Make SecuritySelector() async
+6. Make another user account: `python manage.py createsuperuser --username=testsuperuser` 
+7. Run server and delete tasks. Test tracker page from 2 different browsers.
+- Login to: `http://127.0.0.1:8000/admin/login` as different user.
+- Each user should be receiving seperate JSON responses from the sockets.
+from .models import SecurityProfile
+8. Add Security profile model to admin.py and check in admin dashboard.
+- Test again on two browsers. Exiting the tracker page should remove the Security Profile from django admin, for that user's selected securities. Whn no users are active, the Periodic 3rd party API call should also be removed.
+- Price feed component is now complete. Proceeding to imporove the UI and then add the charts, then the RSS feed for articles.
 
-
+# Improve UI
 
 
 
