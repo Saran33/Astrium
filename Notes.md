@@ -226,7 +226,9 @@ from .models import SecurityProfile
 - Price feed component is now complete. Proceeding to imporove the UI and then add the charts, then the RSS feed for articles.
 
 # Improve UI
-
+1. Add toggle checkbox after NAV bar to basic.html, add JS for toggle.
+2. Add styling for it to basic.css
+3. Add slider for mobile in securitytracker.html
 
 
 # Run server for testing
