@@ -230,11 +230,34 @@ from .models import SecurityProfile
 2. Add styling for it to basic.css
 3. Add slider for mobile in securitytracker.html
 
+# Add Plotly Dash
+1. Install [django-plotly-dash](https://django-plotly-dash.readthedocs.io/en/latest/installation.html).
+`pip install django_plotly_dash`
+- Add it to installed app in settings.py
+-Add the pattern to urlpatterns in urls.py
+`pip install django-redis`
+- Add `channels_redis` to settings.py installed_apps
+- CRISPY_TEMPLATE_PACK = 'bootstrap5'
+- STATICFILES_FINDERS, PLOTLY_COMPONENTS, static files
+2. Create dash_apps folder in main_app.py. Create chart_apps folder within it, and a test_apps folder.
+- Create line_chart.py in chart_apps.
+3. Bring dash app into securitytracker.html.
+4. Add the dash app to urls.py. just need to import it. No need to add to urlpatterns.
+5. Add https://cdn.plot.ly/plotly-latest.min.js script to basic.html.
 
-# Run server for testing
+
+# Run servers for testing
 source astenv/bin/activate
 cd astrium
 python manage.py runserver
+
+redis-server
+
+cd astrium
+celery -A astrium.celery worker --pool=solo -l info
+
+cd astrium
+celery -A astrium beat -l INFO
 
 
 

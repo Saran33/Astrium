@@ -24,8 +24,8 @@ def checkAuthenticated(request):
         return True
 
 async def SecurityTracker(request):
-    is_loginned = await checkAuthenticated(request)
-    if not is_loginned:
+    is_logged_in = await checkAuthenticated(request)
+    if not is_logged_in:
         return HttpResponse("Login First")
     securityselector = request.GET.getlist('securityselector')
     print('securityselector')

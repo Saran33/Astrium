@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'django_celery_beat',
 
     'channels',
+
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'channels_redis',
 ]
 
 MIDDLEWARE = [
@@ -124,7 +127,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -149,3 +152,31 @@ CHANNEL_LAYERS = {
         },
     },
 }
+
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django_plotly_dash.finders.DashAssetFinder',
+    'django_plotly_dash.finders.DashComponentFinder'
+]
+
+PLOTLY_COMPONENTS = [
+
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+
+    'dpd_components'
+]
+
+import os
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/2.2/howto/static-files/
+STATICFILES_LOCATION = 'static'
+STATIC_URL = '/static/'
+STATIC_ROOT = 'static'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'astrium/static')
+]
