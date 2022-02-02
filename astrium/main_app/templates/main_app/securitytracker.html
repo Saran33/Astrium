@@ -1,5 +1,10 @@
 {% extends 'main_app/basic.html' %}
 {% load static %}
+{% load humanize %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'main_app/css/tracker.css' %}">
+</head>
+{% comment %} https://docs.djangoproject.com/en/4.0/ref/contrib/humanize/ {% endcomment %}
 {% block title %}
 {% load myfilters %}
 SecurityTracker
@@ -21,53 +26,125 @@ SecurityTracker
 {% endblock %}
 {% block body %}
 <div class="container">
-    <h1>Market Data</h1>
+    <h1>Oba Markets Data</h1>
     <div class="table-container">
         <table class="table">
             <thead>
                 <tr>
-                    <th scope="col">SNo.</th>
-                    <th scope="col">Security</th>
+                    <th scope="col">Ticker</th>
+                    {% comment %} <th scope="col">Name</th> {% endcomment %}
                     <th scope="col">Price</th>
-                    <th scope="col">Previous Close</th>
-                    <th scope="col">Open</th>
-                    <th scope="col">Change</th>
+                    <th scope="col">1D Δ %</th>
+                    <th scope="col">1D Δ</th>
                     <th scope="col">Market Cap</th>
+                    <th scope="col">Market Cap Δ %</th>
                     <th scope="col">Volume</th>
+                    <th scope="col">Volume Δ %</th>
                 </tr>
             </thead>
             <tbody>
                 {% for key, value in data.items %}
                 <tr>
-                    <th scope="row">{{forloop.counter}}</th>
-                    <td>{{key}}</td>
-                    <td id="{{key}}_price">{{ value|get:"Quote Price"|floatformat:4 }}</td>
-                    <td id="{{key}}_prevprice">{{ value|get:"Previous Close"|floatformat:4 }}</td>
-                    <td id="{{key}}_open">{{ value|get:"Open" }}</td>
-                    <td id="{{key}}_change">
+                    {% comment %} <th scope="row">{{forloop.counter}}</th> {% endcomment %}
+
+                    {% comment %} <td id="{{key}}_logo"> {% endcomment %}
+                    <td id="{{key}}_symbol" class="n-pv24 tl flex items-center logo-ticker">
+                        <a class="flex items-center group no-underline truncate" title="{{key}}_symbol" data-testid="currency-link" href="#">
+                            <div class="dark-bg-near-white n-h24 n-w24 n-mn-w24 currency-logo n-mr9 br-100">
+                                <img alt="{{key}} Logo URL" src="{{ value|get:"logo_url" }}" width="24" height="24" class="br-100">
+                                    {% comment %} style="position:absolute;top:0;left:0;bottom:0;right:0;box-sizing:border-box;padding:0;border:none;margin:auto;display:block;width:0;height:0;min-width:100%;max-width:100%;min-height:100%;max-height:100%" {% endcomment %}
+                                    {% comment %} srcset="{{ value|get:"logo_url" }}&amp;w=32&amp;q=75 1x, {{ value|get:"logo_url" }}&amp;w=48&amp;q=75 2x"> {% endcomment %}
+                                <span class="n-near-black group-hover-underline nowrap db ma0 f6 f5-ns fw6 truncate overflow-visible n-mr6">{{ value|get:"name" }}</span>
+                                <span class="dib f7 ttu n-mt2 n-gray n-pr3">{{ value|get:"symbol" }}</span>
+                            </div>
+                        </a>
+                    </td>
+
+                    {% comment %} <td id="{{key}}_name">{{ value|get:"name" }}</td> {% endcomment %}
+
+                    <td id="{{key}}_price">${{ value|get:"price"|floatformat:2 }}</td>
+
+                    <td id="{{key}}_change_percent">
                         <script>
-                            var change = document.getElementById("{{key}}_price").innerHTML - document.getElementById("{{key}}_prevprice").innerHTML;
-                            change = Number((change).toFixed(4));
-                            if (change > 0) {
-                                document.getElementById("{{key}}_change").className = "green"
-                                document.getElementById("{{key}}_change").innerHTML = "+" + change
+                            var change = price_change = ({{ value|get:"price_change" }})
+                            var price = {{ value|get:"price" }}
+                            var changePct = ((price / (price - change)) - 1) * 100;
+                            changePct = Number(changePct).toFixed(2);
+                            if (changePct > 0) {
+                                document.getElementById("{{key}}_change_percent").className = "green"
+                                document.getElementById("{{key}}_change_percent").innerHTML = "+" + changePct + "%"
                             }
-                            else if (change < 1) {
-                                document.getElementById("{{key}}_change").className = "red"
-                                document.getElementById("{{key}}_change").innerHTML = change
+                            else if (changePct < 0) {
+                                document.getElementById("{{key}}_change_percent").className = "red"
+                                document.getElementById("{{key}}_change_percent").innerHTML = changePct + "%"
                             }
                             else {
-                                document.getElementById("{{key}}_change").innerHTML = change
+                                document.getElementById("{{key}}_change_percent").innerHTML = changePct + "%"
                             }
                         </script>
                     </td>
-                    <td id="{{key}}_mktcap">{{ value|get:"Market Cap" }}</td>
-                    <td id="{{key}}_volume">{{ value|get:"Volume" }}</td>
+
+                    <td id="{{key}}_price_change">
+                        <script>
+                            change = numberFormatter.format(Number((change).toFixed(2)));
+                            if (change > 0) {
+                                document.getElementById("{{key}}_price_change").className = "green"
+                                document.getElementById("{{key}}_price_change").innerHTML = "+" + change
+                            }
+                            else if (change < 0) {
+                                document.getElementById("{{key}}_price_change").className = "red"
+                                document.getElementById("{{key}}_price_change").innerHTML = change
+                            }
+                            else {
+                                document.getElementById("{{key}}_price_change").innerHTML = change
+                            }
+                        </script>
+                    </td>
+
+                    <td id="{{key}}_market_cap">${{ value|get:"market_cap"|textNum }}</td>
+
+                    <td id="{{key}}_market_cap_change_pct">
+                        <script>
+                            var mktCapChange = {{ value|get:"market_cap_change_pct" }} * 100;
+                            mktCapChange = Number((mktCapChange).toFixed(2));
+                            if (mktCapChange > 0) {
+                                document.getElementById("{{key}}_market_cap_change_pct").className = "green"
+                                document.getElementById("{{key}}_market_cap_change_pct").innerHTML = "+" + mktCapChange + "%"
+                            }
+                            else if (mktCapChange < 0) {
+                                document.getElementById("{{key}}_market_cap_change_pct").className = "red"
+                                document.getElementById("{{key}}_market_cap_change_pct").innerHTML = mktCapChange + "%"
+                            }
+                            else {
+                                document.getElementById("{{key}}_market_cap_change_pct").innerHTML = mktCapChange + "%"
+                            }
+                        </script>
+                    </td>
+
+                    <td id="{{key}}_volume">{{ value|get:"volume"|textNum }}</td>
+
+                    <td id="{{key}}_volume_change_pct">
+                        <script>
+                            var volumeChange = {{ value|get:"volume_change_pct" }} * 100;
+                            volumeChange = Number((volumeChange).toFixed(2));
+                            if (volumeChange > 0) {
+                                document.getElementById("{{key}}_volume_change_pct").className = "green"
+                                document.getElementById("{{key}}_volume_change_pct").innerHTML = "+" + volumeChange + "%"
+                            }
+                            else if (volumeChange < 0) {
+                                document.getElementById("{{key}}_volume_change_pct").className = "red"
+                                document.getElementById("{{key}}_volume_change_pct").innerHTML = volumeChange + "%"
+                            }
+                            else {
+                                document.getElementById("{{key}}_volume_change_pct").innerHTML = volumeChange + "%"
+                            }
+                        </script>
+                    </td>
+
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        {% comment %} table {% endcomment %}
     </div>
 </div>
 {{ room_name|json_script:"room-name" }}
@@ -90,28 +167,90 @@ SecurityTracker
         console.log(e.data);
         const data = JSON.parse(e.data);
         console.log(data);
+
+
         for (const [key, value] of Object.entries(data)) {
-            var price = Number((value['Quote Price']).toFixed(4));
-            var prevprice = Number((value['Previous Close']).toFixed(4));
-            document.getElementById(key + '_price').innerHTML = price;
-            document.getElementById(key + '_prevprice').innerHTML = prevprice;
-            document.getElementById(key + '_open').innerHTML = value['Open'];
-            document.getElementById(key + '_mktcap').innerHTML = value['Market Cap'];
-            document.getElementById(key + '_volume').innerHTML = value['Volume'];
-            var change = document.getElementById(key + '_price').innerHTML - document.getElementById(key + '_prevprice').innerHTML;
-            change = Number((change).toFixed(4));
+            var price = Number(value['price']);
+            var dispPrice = usdFormatter.format(price)
+            document.getElementById(key + '_price').innerHTML = dispPrice;
+            // var prevprice = Number((value['Previous Close']).toFixed(4));
+            // document.getElementById(key + '_prevprice').innerHTML = prevprice;
+            // document.getElementById(key + '_open').innerHTML = value['Open'];
+            var change = Number(value['price_change']);
+            var dispChange = numberFormatter.format(change);
+            // console.log("change", change);
+            // console.log("change", typeof change);
+            // console.log("dispChange", dispChange);
+            // console.log("dispChange", typeof dispChange);
+            // var changePct = ((price / (price - change)) - 1) * 100;
+            var changePct = Number(value['price_change_pct']) * 100;
+            var dispChangePct = changePct.toFixed(2);
+            // console.log("changePct", changePct);
+            // console.log("changePct", typeof changePct);
+            // console.log("dispChangePct", dispChangePct);
+            // console.log("dispChangePct", (typeof dispChangePct));
+
+            if (changePct > 0) {
+                document.getElementById(key + '_change_percent').className = "green";
+                document.getElementById(key + '_change_percent').innerHTML.innerHTML = "+" + dispChangePct + "%";
+            } else if (changePct < 0) {
+                document.getElementById(key + '_change_percent').className = "red";
+                document.getElementById(key + '_change_percent').innerHTML = dispChangePct + "%";
+            }
+
             if (change > 0) {
-                document.getElementById(key + '_change').className = "green";
-                document.getElementById(key + '_change').innerHTML = "+" + change;
+                document.getElementById(key + '_price_change').className = "green";
+                document.getElementById(key + '_price_change').innerHTML = "+" + dispChange;
             } else if (change < 0) {
-                document.getElementById(key + '_change').className = "red";
-                document.getElementById(key + '_change').innerHTML = change;
+                document.getElementById(key + '_price_change').className = "red";
+                document.getElementById(key + '_price_change').innerHTML = dispChange;
+            }
+            
+            var marketCap = (parseFloat(value['market_cap']));
+            var dispMarketCap = usdShortFormatter.format(Number(marketCap));
+            // console.log("dispMarketCap", dispMarketCap);
+            // console.log(typeof marketCap);
+
+            document.getElementById(key + '_market_cap').innerHTML = dispMarketCap;
+
+            var mktCapChange = Number(value['market_cap_change_pct']) * 100;
+            var dispMktCapChange = numberFormatter.format(mktCapChange.toFixed(2));
+            if (mktCapChange > 0) {
+                document.getElementById(key + '_market_cap_change_pct').className = "green";
+                document.getElementById(key + '_market_cap_change_pct').innerHTML = "+" + dispMktCapChange + "%";
+            }
+            else if (mktCapChange < 0) {
+                document.getElementById(key + '_market_cap_change_pct').className = "red";
+                document.getElementById(key + '_market_cap_change_pct').innerHTML = dispMktCapChange + "%";
+            }
+
+            var volume = Number(value['volume']);
+            var dispVolume = numberShortFormatter.format(volume);
+            document.getElementById(key + '_volume').innerHTML = dispVolume;
+
+            var volumeChange = Number(value['volume_change_pct']) * 100;
+            var dispVolumeChange = numberFormatter.format(volumeChange.toFixed(2));
+            if (volumeChange > 0) {
+                document.getElementById(key + '_volume_change_pct').className = "green";
+                document.getElementById(key + '_volume_change_pct').innerHTML = "+" + dispVolumeChange + "%";
+            } else if (volumeChange < 0) {
+                document.getElementById(key + '_volume_change_pct').className = "red";
+                document.getElementById(key + '_volume_change_pct').innerHTML = dispVolumeChange + "%";
             }
         }
     };
 </script>
+<br>
+{% comment %} {% load plotly_dash %}
+<div class="{% plotly_class name='line_chart' %} card" style="height: 100%; width: 100%">
+    {% plotly_app name='line_chart' ratio=0.45 %}
+</div>
+<br>
+{{ plot1 | safe }}
+{% plotly_message_pipe %} {% endcomment %}
 {% endblock %}
 {% block js %}
 <script>
 </script>
 {% endblock %}
+

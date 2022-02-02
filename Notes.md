@@ -1,6 +1,24 @@
-#### Get full list of all tickers:
+# Run servers for testing
+source astenv/bin/activate
+cd astrium
+
+python manage.py runserver
+
+redis-server
+
+cd astrium
+celery -A astrium.celery worker --pool=solo -l info
+
+cd astrium
+celery -A astrium beat -l INFO
+
+
+python manage.py makemigrations
+python manage.py migrate
+
 
 1. Create venv:
+`python --version`
 `pip install virtualenv`
 `virtualenv astenv`
 Move contents to parent folder.
@@ -9,6 +27,21 @@ windows:
 `./astenv/scripts/activate`
 unix:
 `source astenv/bin/activate`
+
+Exit venv:
+`deactivate`
+Delete venv:
+`rm -rf astenv`
+Remake from requitements.txt:
+`pip install -r requirements.txt`
+`python -m pip check`
+
+Adding ENV variables:
+`type nul > .env`
+
+
+
+
 
 3. install dependencies:
 `pip install django`
@@ -132,7 +165,6 @@ In production version, we could use web sockets to make calls from our own datab
 If task is added directly inside beat scheduler, the task would automatically be allocated to celery every n seconds, even if no user is on the front-end. This is not desired functionality, so custom code for web sockets will be used later.
 12. Add code to __init__.py of astrium dir. And add `app.autodiscover` to celery.py
 13. Apply migrations:
-`python manage.py migrate`
 `python manage.py makemigrations`
 `python manage.py migrate`
 14. Create a superuser:
@@ -230,15 +262,48 @@ from .models import SecurityProfile
 2. Add styling for it to basic.css
 3. Add slider for mobile in securitytracker.html
 
+# Add Plotly Dash
+1. Install [django-plotly-dash](https://django-plotly-dash.readthedocs.io/en/latest/installation.html).
+`pip install django_plotly_dash`
+- Add it to installed app in settings.py
+-Add the pattern to urlpatterns in urls.py
+`pip install django-redis`
+- Add `channels_redis` to settings.py installed_apps
+- CRISPY_TEMPLATE_PACK = 'bootstrap5'
+- STATICFILES_FINDERS, PLOTLY_COMPONENTS, static files
+- Create static dir in astrium dir.
+- `python manage.py collectstatic`
+2. Create dash_apps folder in main_app.py. Create chart_apps folder within it, and a test_apps folder.
+- Create line_chart.py in chart_apps.
+3. Bring dash app into securitytracker.html.
+4. Add the dash app to urls.py. just need to import it. No need to add to urlpatterns.
+5. Add https://cdn.plot.ly/plotly-latest.min.js script to basic.html.
+6. 
 
-# Run server for testing
+
+# Run servers for testing
 source astenv/bin/activate
 cd astrium
+
 python manage.py runserver
 
+redis-server
+
+cd astrium
+celery -A astrium.celery worker --pool=solo -l info
+
+cd astrium
+celery -A astrium beat -l INFO
 
 
 
+### 2022
+Delete queue directly from redis:
+--purge, --discard  - Purges all waiting tasks before the daemon is started.
+                      **WARNING**: This is unrecoverable, and the tasks will
+                      be deleted from the messaging server.
+
+celery -A astrium.celery worker --pool=solo --purge -l info
 
 
 https://github.com/PacktPublishing/Interactive-Dashboards-and-Data-Apps-with-Plotly-and-Dash
@@ -246,3 +311,12 @@ https://github.com/frederickvandenberg/crypto-dashboard
 https://github.com/bendgame/MediumFinance/pulse
 https://medium.com/swlh/how-to-create-a-dashboard-to-dominate-the-stock-market-using-python-and-dash-c35a12108c93
 https://github.com/Hiteshhegde/dash-stock-app/blob/main/ticks.csv
+
+
+# Django Money
+https://github.com/django-money/django-money
+https://docs.openexchangerates.org/
+
+
+##### Icons
+http://cryptoicons.co/

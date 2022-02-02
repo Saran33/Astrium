@@ -1,0 +1,40 @@
+:root{
+    --main-color: #181818 !important;
+    --font-color: rgb(255, 255, 255) !important;
+    --primary-color: #64646F !important;
+    --secondary-color: #d3ab95 !important;
+    --tertiary-color: rgb(220, 187, 166) !important;
+    --fourth-color: #DCBBA6  !important;
+}
+
+.dark-theme{
+    --main-color: #181818;
+    --font-color: rgb(255, 255, 255);
+    --font-color2: #F8F8F8;
+}
+
+.light-theme{
+    --main-color: rgb(255, 255, 255);
+    --font-color: #000;
+}
+
+a:link {
+    color : var(--font-color) !important;
+}
+a:visited {
+    color : var(--font-color) !important;
+}
+a:hover {
+    color : var(--font-color) !important;
+}
+
+a:active {
+    color : var(--font-color) !important;
+}
+
+.dib.f7.ttu.n-mt2.n-gray.n-pr3 {
+    color : var(--font-color) !important;
+    font-size : 12px !important;
+    padding-left : 3px !important;
+    align-self: bottom !important;
+}
