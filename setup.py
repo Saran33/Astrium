@@ -8,12 +8,12 @@ setup(
     packages=find_packages(include=['astrium']),
     version='0.1',
 	author='Saran Connolly',
-    description='PWE Capital Astrium - market analysis dashboard.',
+    description='Django Astrium - market analysis dashboard.',
 	long_description=long_description,
 	long_description_content_type="text/markdown",
-	url="https://github.com/PWE-Capital/astrium",
+	url="https://github.com/Saran33/astrium",
     project_urls={
-        "Bug Tracker": "https://github.com/PWE-Capital/astrium/issues",
+        "Bug Tracker": "https://github.com/Saran33/astrium/issues",
     },
 	classifiers=[
         "Programming Language :: Python :: 3",

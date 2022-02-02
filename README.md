@@ -1,11 +1,9 @@
-# PWE Astrium
+# Astrium
 
-### Capital markets analysis dashboard.
-PWE Astrium is a PWE Capital web app for viewing real-time market data and conducting security analysis.
-This is a development version which uses Yahoo Finance and Alpha Vantage data for illustrative testing purposes.
+Astrium is a Django web app for viewing real-time cryptocurrency and stock market data via Websockets.
 
 The repository can be found at:
-[Github-PWE_Astrium](https://github.com/PWE-Capital/astrium/)
+[Github-Astrium](https://github.com/Saran33/astrium/)
 
 #### To install from git:
-`pip install git+git://github.com/PWE-Capital/astrium.git`
+`pip install git+git://github.com/Saran33/astrium.git`
