@@ -6,12 +6,19 @@ from channels.layers import get_channel_layer
 import asyncio
 import simplejson as json
 
+# from .sqlalch import all_tickers
+# from pwe.av import get_av_live, av_search
+from .apis.utilsAPI import list_all_tickers, get_ticker
+from .apis.nom import list_nomics_coins
 
 @shared_task(bind=True)
 def update_security(self, securityselector):
     data = {}
-    available_securities = tickers_sp500()
+    # available_securities = tickers_sp500()
+    # available_securities = all_tickers()
+    available_securities = list_all_tickers()
     for i in securityselector:
+        # available_securities = av_search(i)
         if i in available_securities:
             pass
         else:
@@ -25,7 +32,10 @@ def update_security(self, securityselector):
         # thread = Thread(target=lambda q, arg1: q.put(
             # {securityselector[i]: get_quote_table(arg1)}), args=(que, securityselector[i]))
         thread = Thread(target=lambda q, arg1: q.put({securityselector[i]: json.loads(
-            json.dumps(get_quote_table(arg1), ignore_nan=True))}), args=(que, securityselector[i]))
+            # json.dumps(get_quote_table(arg1), ignore_nan=True))}), args=(que, securityselector[i]))
+            # json.dumps(get_av_live(arg1), ignore_nan=True))}), args=(que, securityselector[i]))
+            json.dumps(get_ticker(arg1, stocks=False), ignore_nan=True))}), args=(que, securityselector[i]))
+
         thread_list.append(thread)
         thread_list[i].start()
 

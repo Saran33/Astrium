@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 
+import os
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -38,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django.contrib.humanize',
+
     'main_app',
 
     'django_celery_results',
@@ -57,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'django_plotly_dash.middleware.BaseMiddleware',
 ]
 
 ROOT_URLCONF = 'astrium.urls'
@@ -119,6 +125,8 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
+# THOUSAND_SEPARATOR = ',' # default
+USE_THOUSAND_SEPARATOR = True
 USE_L10N = True
 
 USE_TZ = True
@@ -127,12 +135,37 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-# STATIC_URL = '/static/'
+STATIC_URL = '/static/'
+STATICFILES_LOCATION = 'static'
+
+# Static root is used for production
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(SITE_ROOT, 'staticfiles')
+
+# STATICFILES_DIRS = (
+#   os.path.join(SITE_ROOT, 'static/'),
+# )
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'astrium/static')
+]
+
+# print ("STATICFILES_DIRS", STATICFILES_DIRS)
+# print ("STATIC_ROOT", STATIC_ROOT)
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django_plotly_dash.finders.DashAssetFinder',
+    'django_plotly_dash.finders.DashComponentFinder'
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 # Celery Settings
 CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
@@ -144,6 +177,23 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_RESULT_BACKEND = 'django-db'
 CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
+# Celery 6 
+# CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+# accept_content = ['application/json']
+# result_serializer = 'json'
+# task_serializer = 'json'
+# timezone = 'UTC'
+
+# result_backend = 'django-db'
+# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'my_cache_table',
+#     }
+# }
+# CELERY_CACHE_BACKEND = 'default'
+
 CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
@@ -154,13 +204,6 @@ CHANNEL_LAYERS = {
 }
 
 
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'django_plotly_dash.finders.DashAssetFinder',
-    'django_plotly_dash.finders.DashComponentFinder'
-]
-
 PLOTLY_COMPONENTS = [
 
     'dash_core_components',
@@ -168,15 +211,42 @@ PLOTLY_COMPONENTS = [
     'dash_renderer',
 
     'dpd_components'
+    # 'dpd_static_support',
+    # 'dash_bootstrap_components',
 ]
 
-import os
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/2.2/howto/static-files/
-STATICFILES_LOCATION = 'static'
-STATIC_URL = '/static/'
-STATIC_ROOT = 'static'
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'astrium/static')
-]
+# PLOTLY_DASH = {
+# #     # Route used for the message pipe websocket connection
+#     "ws_route" :   "dpd/ws/channel",
+
+# #     # Route used for direct http insertion of pipe messages
+#     "http_route" : "dpd/views",
+
+# #     # Flag controlling existince of http poke endpoint
+#     "http_poke_enabled" : True,
+
+# #     # Insert data for the demo when migrating
+# #     "insert_demo_migrations" : False,
+
+# #     # Timeout for caching of initial arguments in seconds
+# #     "cache_timeout_initial_arguments": 60,
+
+# #     # Name of view wrapping function
+# #     "view_decorator": None,
+#     "view_decorator": "django_plotly_dash.access.login_required",
+
+# #     # Flag to control location of initial argument storage
+#     "cache_arguments": True,
+
+# #     # Flag controlling local serving of assets
+#     # "serve_locally": True,
+# }
+
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+if os.getcwd() == '/app':
+    DEBUG = False

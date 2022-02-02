@@ -10,23 +10,46 @@ SecuritySelector
 </style>
 {% endblock %}
 {% block body %}
-<div class="container"></div>
-<h1 class="header-1">PWE Markets Data</h1>
-<h3 class="header-3">Security Analysis</h3>
-<p></p>
-<form class="security_selector" action="/securitytracker">
-    <label class="securityselector_label" for="securityselector">Select Securities:</label>
-    <select class="form-select form-select-lg mb-3" multiple aria-label="multiple select example"
-        name="securityselector">
-        {% for i in securityselector %}
-        <option value="{{i}}">{{i}}</option>
-        {% endfor%}
-    </select>
-    <br>
-    <div class="d-grid gap-2">
-        <input class="btn btn-primary" type="submit">
-    </div>
-</form>
+<div class="container justify-content-center" align="center"></div>
+    <h1 class="header-1">Oba Markets Data</h1>
+    <h3 class="header-3">Security Analysis</h3>
+    <p></p>
+
+    {% comment %} <div class="input-group">
+        <input type="search" class="form-control rounded" placeholder="Type to search..." aria-label="Search" aria-describedby="search-addon" />
+        <button type="button" class="btn btn-outline-primary">search</button>
+      </div> {% endcomment %}
+
+    <form class="security_selector" action="/securitytracker">
+        <label class="securityselector_label" for="securityselector">Select Securities:</label>
+
+
+        <select class="form-select form-select-lg mb-3" multiple aria-label="multiple select example"
+            name="securityselector">
+            {% for k, v in securityselector.items %}
+            <option value="{{k}}">{{k}} | {{v}}</option>
+            {% endfor%}
+        </select>
+
+        {% comment %} <input class="form-control" list="datalistOptions" id="securityDataList" placeholder="Type to search...">
+        <datalist id="datalistOptions"
+            name="securityselector">
+            {% for k, v in securityselector.items %}
+            <option value="{{k}}">{{v}}</option>
+            {% endfor%}
+        </datalist> {% endcomment %}
+
+        {% comment %} <select class="select" multiple data-mdb-filter="true" name="securityselector">
+            {% for k, v in securityselector.items %}
+            <option value="{{k}}">{{v}}</option>
+            {% endfor%}
+        </select> {% endcomment %}
+
+        <br>
+        <div class="d-grid gap-2">
+            <input class="btn btn-primary" type="submit">
+        </div>
+    </form>
 </div>
 {% endblock %}
 {% block js %}

@@ -1,0 +1,25 @@
+{% extends 'main_app/basic.html' %}
+{% load static %}
+{% block title %}
+{% load myfilters %}
+SecurityChart
+{% endblock %}
+{% block css %}
+<style>
+</style>
+{% endblock %}
+{% block body %}
+{% block content %}
+{% load plotly_dash %}
+<h1>Price Chart</h1>
+<div class="{% plotly_class name='line_chart' %} card" style="height: 100%; width: 100%">
+    {% plotly_app name='line_chart' ratio=0.45 %}
+</div>
+<br>
+{{ plot1 | safe }}
+{% plotly_message_pipe %}
+{% endblock %}
+{% block js %}
+<script>
+</script>
+{% endblock %}

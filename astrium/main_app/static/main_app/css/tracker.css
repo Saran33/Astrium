@@ -1,0 +1,20 @@
+
+
+:root{
+    --main-color: #181818;
+    --font-color: rgb(255, 255, 255) !important;
+}
+
+a:link {
+    color : var(--font-color) !important;
+}
+a:visited {
+    color : var(--font-color) !important;
+}
+a:hover {
+    color : var(--font-color) !important;
+}
+
+a:active {
+    color : var(--font-color) !important;
+}
